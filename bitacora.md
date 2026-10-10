@@ -6,7 +6,7 @@ Fecha de trabajo: 2026-10-09, America/Guayaquil. Preparación asistida por Codex
 |---|---|---|
 | Minutos hasta primera versión que compila | no registrado | 24.61 |
 | Minutos hasta que pasan los 6 casos | no registrado | 24.64 |
-| Iteraciones con el agente (mensajes de corrección del estudiante) | no registrado | 0 |
+| Iteraciones con el agente (mensajes de corrección del estudiante) | no registrado | 1 (corrección de respuestas) |
 | Líneas de código escritas a mano por el estudiante | no registrado | 0 |
 | Enunciados modificados en spec | — | 1 de 61 |
 | Enunciados modificados en Constitution | — | 14 de 50: 12 adaptados y 2 reemplazados |
@@ -25,8 +25,8 @@ Evidencia: archivos en ../divisor_cuenta_web/evidencias/: inicio-plan.txt, prime
 La preparación de herramientas/constitución previa no se incluye. La primera compilación se
 midió sobre la aplicación implementada, no la pantalla de ejemplo de Vite.
 
-El usuario delegó el trabajo con un único mensaje. Los comandos, correcciones internas y
-consultas de herramientas de Codex no son iteraciones según la definición del deber.
+El usuario delegó el trabajo con un mensaje inicial y luego pidió simplificar las respuestas. Los comandos, correcciones internas y
+consultas de herramientas de Codex no son iteraciones; la petición posterior de simplificar las respuestas sí cuenta como una corrección.
 No se inventan tiempos ni conteos históricos de Flutter. El tiempo React incluye elaboración
 asistida de plan, tareas, pruebas e implementación; no permite inferir superioridad por sí solo.
 
