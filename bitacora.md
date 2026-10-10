@@ -43,5 +43,8 @@ requieren revisión personal del estudiante. La explicabilidad personal no puede
 por el agente. La apertura offline por file:// no pudo probarse en el navegador integrado
 por su política de URL; se verificó estructura autocontenida y sintaxis del bundle.
 Los seis casos se probaron además en navegador HTTP local, con capturas móvil/escritorio.
-No se ha publicado en GitHub: la solicitud fue preparar para subir; ambos repositorios
-carecen de remoto propio configurado. El paquete contiene historia recuperable mediante bundles.
+Ambos repositorios están publicados en GitHub: Flutter en
+https://github.com/Soaks2112/divisor_cuenta (`sdd`) y React en
+https://github.com/Soaks2112/divisor_cuenta_web (`codex/deber2-react`).
+Se comprobó que los commits de cada rama coinciden con el remoto. El paquete también
+contiene historia recuperable mediante bundles.
