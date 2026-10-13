@@ -1,0 +1,8 @@
+459d3cb refactor: numero magico
+6ad57ad verde: propina maxima 100
+de9c368 rojo: pruebas de propina maxima 100
+984bbfa docs: registrar repositorio Flutter publicado
+4627f5b docs: contabilizar correccion de respuestas
+639f1f0 docs: completar bitacora del deber 2 con mediciones React
+f44741f docs: iniciar bitacora de migracion a React
+c7401d5 app divisor de cuenta - rama sdd, con pruebas

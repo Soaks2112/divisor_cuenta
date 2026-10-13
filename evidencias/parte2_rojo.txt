@@ -1,0 +1,26 @@
+00:00 +0: loading C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart
+00:00 +0: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: rechaza una propina de 150 por ciento
+00:00 +0 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: rechaza una propina de 150 por ciento [E]
+  Expected: 'La propina no puede superar el 100%'
+    Actual: <null>
+     Which: not an <Instance of 'String'>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test\division_test.dart 20:5                        main.<fn>
+  
+00:00 +0 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: permite una propina de exactamente 100 por ciento
+00:00 +1 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: 1. reparto normal
+00:00 +2 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: 2. sin propina
+00:00 +3 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: 3. cero personas
+00:00 +4 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: 4. monto no numerico
+00:00 +5 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: 5. redondeo exacto
+00:00 +6 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: 6. redondeo hacia arriba
+00:00 +7 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: LSP permite sustituir estrategias sin preguntar el tipo
+00:00 +8 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/pantalla_test.dart: calcula 27.50 en pantalla
+00:01 +9 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/pantalla_test.dart: muestra error para cero personas y no resultado
+00:02 +10 -1: C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/pantalla_test.dart: muestra error para monto no numerico
+00:02 +11 -1: Some tests failed.
+
+Failing tests:
+  C:/Users/XCORP/Documentsc/Programasrepos/Clasepasisapps26/Participacion7/divisor_cuenta/test/division_test.dart: rechaza una propina de 150 por ciento
