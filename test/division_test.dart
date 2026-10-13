@@ -14,6 +14,18 @@ void main() {
   final exacto = RedondeoExacto();
   final arriba = RedondeoHaciaArriba();
 
+  test('rechaza una propina de 150 por ciento', () {
+    const cuenta = Cuenta(monto: 100, personas: 4, propina: 150);
+
+    expect(validador.validar(cuenta), 'La propina no puede superar el 100%');
+  });
+
+  test('permite una propina de exactamente 100 por ciento', () {
+    const cuenta = Cuenta(monto: 100, personas: 4, propina: 100);
+
+    expect(validador.validar(cuenta), isNull);
+  });
+
   for (final caso in casos) {
     test(caso.nombre, () {
       final cuenta = Cuenta(monto: caso.monto, personas: caso.personas, propina: caso.propina);
