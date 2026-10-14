@@ -2,16 +2,16 @@
 
 ## 1. Rojo antes de verde
 
-La prueba de monto 100, 4 personas y propina 150 mostró `Expected: 'La propina no puede superar el 100%'` y `Actual: <null>`. Falló porque todavía se aceptaba esa propina. Verla fallar confirmó que detectaba la regla que faltaba. La prueba de propina exactamente 100 sí pasó desde el inicio.
+La prueba esperaba el mensaje **«La propina no puede superar el 100%»**, pero recibió `null`, es decir, ningún error. Era importante verla fallar porque así comprobé que la prueba detectaba el problema antes de corregirlo.
 
 ## 2. Linter vs. IA
 
-El linter mostró `unused_local_variable` por una variable sin usar y `avoid_print` por `print('hola')`. Como el código estaba limpio, agregué esos ejemplos temporalmente y después los retiré, siguiendo la consigna. La IA señaló el número mágico `100` en la validación. El linter no lo marcó porque es código válido y las reglas configuradas no deciden si ese número necesita un nombre que explique su significado.
+El linter me avisó que había una variable sin usar. La puse a propósito porque al inicio no había avisos, y luego la borré. La IA señaló el **100** usado directamente como límite de propina. El linter no lo encontró porque ese número no rompe ninguna regla; simplemente cuesta más entender qué significa.
 
 ## 3. Tu refactorización
 
-Elegí el número mágico del límite de propina. Lo convertí en la constante privada `_propinaMaxima` y la usé tanto en la comparación como en el mensaje. El límite sigue siendo 100 y el mensaje sigue siendo exactamente el mismo. Las 12 pruebas pasaron antes y después, sin modificarlas durante el refactor. Esto verifica los casos cubiertos, aunque no demuestra todos los casos posibles.
+Elegí ese **100** sin nombre. Le di el nombre «propina máxima» y usé ese valor para revisar la propina y mostrar el mensaje. La regla sigue siendo la misma. Lo comprobé porque las **12 pruebas pasaron** antes y después del cambio.
 
 ## 4. Coverage
 
-Entre los archivos medidos en `coverage/lcov.info`, `lib/presentation/pantalla_divisor.dart` tiene el porcentaje más bajo: **97,50 %**, con 39 de 40 líneas cubiertas. No se ejecutó la línea 84, que maneja el cambio del selector de redondeo. Eso indica un caso sin probar, no necesariamente un error. `lib/main.dart` y la interfaz `lib/domain/estrategia_redondeo.dart` no aparecen en el informe: su cobertura no está medida y no se debe presentar como 100 %. La tabla completa está en `evidencias/cobertura.md`.
+De los archivos que aparecen en el informe, **`pantalla_divisor.dart`** tiene el porcentaje más bajo: **97,5 %**. Eso no significa que tenga un error; significa que hay una parte de la pantalla que las pruebas todavía no usaron.
