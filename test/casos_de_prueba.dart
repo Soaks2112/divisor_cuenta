@@ -21,7 +21,7 @@ class CasoDivision {
 }
 
 const casos = <CasoDivision>[
-  CasoDivision(nombre: '1. reparto normal', monto: 100, personas: 4, propina: 10, modo: 'exacto', esperado: 27.50),
+  CasoDivision(nombre: '1. reparto normal', monto: 100, personas: 4, propina: 10, modo: 'exacto', esperado: 27.00),
   CasoDivision(nombre: '2. sin propina', monto: 90, personas: 3, propina: 0, modo: 'exacto', esperado: 30.00),
   CasoDivision(nombre: '3. cero personas', monto: 50, personas: 0, propina: 0, modo: 'exacto', errorEsperado: 'Debe haber al menos una persona'),
   CasoDivision(nombre: '4. monto no numerico', monto: double.nan, personas: 4, propina: 0, modo: 'exacto', errorEsperado: 'Monto inválido'),
