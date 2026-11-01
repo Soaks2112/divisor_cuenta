@@ -1,10 +1,12 @@
-# Deber 4 — De TDD a CI/CD
+# Deber 4 · Verificación y entrega del divisor de cuenta
 
-Estado: preparación local. Faltan ejecuciones y capturas reales de GitHub. Revisar y completar antes de entregar. Las respuestas anteriores se conservan en [respuestas_deber3.md](respuestas_deber3.md).
+## 1. ¿Qué hace el workflow?
 
-## 1. Workflow y pasos
+- **Analyze** revisa el código Dart con las reglas del proyecto y señala errores de tipos y avisos.
+- **Test** ejecuta las pruebas del reparto, las validaciones y la pantalla.
+- **Build** compila la aplicación Android en modo depuración y genera `app-debug.apk`.
 
-Archivo: [ci.yml](.github/workflows/ci.yml).
+En cada PR y en cada push a `main`, el primer job descarga el código, prepara Flutter estable e instala las dependencias. En un push a `main`, si ese job pasa, `entrega` prepara otra máquina, recompila el mismo commit y sube el APK. [Workflow](.github/workflows/ci.yml) · [Primer CI verde](evidencias/parte1_ci_verde.png) · [PR del CI](https://github.com/Soaks2112/divisor_cuenta/pull/2)
 
 ```yaml
 name: CI Flutter
@@ -63,65 +65,49 @@ jobs:
           if-no-files-found: error
 ```
 
-- `analyze`: revisa el código y detecta errores estáticos y avisos del analizador.
-- `test`: ejecuta las pruebas automáticas y falla si una expectativa no se cumple.
-- `build`: compila la aplicación Android y genera el APK de depuración.
+## 2. ¿Qué línea explicó el fallo?
 
-`checkout` obtiene el código; `flutter-action` instala Flutter estable; `pub get` resuelve dependencias. `entrega` espera a `verificar`, corre solo en push a `main`, prepara su propio entorno, recompila y publica el APK.
+El caso `1. reparto normal` reparte $100 más 10 % de propina entre cuatro personas. Cambié el esperado de $27.50 a $27.00. Estas líneas del log identificaron la diferencia de 50 centavos y la aserción que falló.
 
-## 2. Fallo intencional
+```text
+Expected: a numeric value within <0.001> of <27.0>
+  Actual: <27.5>
+   Which:  differs by <0.5>
+test/division_test.dart 41:7                        main.<fn>
+```
 
-Pendiente: ejecutar la Parte 3 en GitHub y copiar aquí la línea real del log y su enlace. Caso elegido: `1. reparto normal`, en `test/casos_de_prueba.dart`; cambiar temporalmente 27.50 por 27.00. La comprobación está en `test/division_test.dart`: `expect(resultado.porPersona, closeTo(caso.esperado!, 0.001))`.
+![CI rojo con una prueba fallida](evidencias/parte3_rojo.png)
 
-Captura pendiente: [✗ y log](evidencias/parte3_rojo.png). El fallo y su corrección deben quedar en el mismo PR. No atribuir a Actions una ejecución local.
+[Log de la ejecución roja](https://github.com/Soaks2112/divisor_cuenta/actions/runs/41310847533/job/124860695008#step:6:23)
 
-## 3. CI, delivery y deployment
+## 3. ¿Qué diferencia hay entre CI, delivery y deployment?
 
-CI integra cambios y ejecuta verificaciones automáticas. Continuous delivery deja un entregable disponible después de aprobar esas verificaciones. Continuous deployment también lo despliega automáticamente a producción.
+La integración continua (CI) comprueba cada cambio. La entrega continua (delivery) deja una versión disponible para que alguien decida cuándo distribuirla. El despliegue continuo (deployment) también publica automáticamente en producción. Aquí implementé CI y entrega automática de un APK debug descargable desde Actions. [Ejecución con el artifact](https://github.com/Soaks2112/divisor_cuenta/actions/runs/41311687528)
 
-El workflow preparado implementa CI y una introducción a continuous delivery: publica un APK debug como artifact después de pasar CI en `main`. Su ejecución en GitHub está pendiente. No hay despliegue a producción.
+## 4. ¿Qué problema evita el bloqueo del merge?
 
-## 4. Merge bloqueado
+Aunque la rama se podía combinar sin conflictos de código, GitHub deshabilitó la fusión porque falló el check obligatorio `verificar`. Así se evita incorporar a `main` un cambio que contradice las pruebas. Restauré el esperado en el mismo PR y la fusión volvió a habilitarse. [PR con ambos commits](https://github.com/Soaks2112/divisor_cuenta/pull/3) · [Regla para main](evidencias/parte2_rama_main.png) · [Check requerido](evidencias/parte2_proteccion.png)
 
-Captura pendiente: [merge bloqueado](evidencias/parte3_merge_bloqueado.png).
+![Fusión bloqueada por el check fallido](evidencias/parte3_merge_bloqueado.png)
 
-Exigir el check `verificar` y un pull request impide fusionar cambios con verificaciones fallidas. Aplicar también la regla a administradores, sin bypass, evita saltársela mediante push directo. La protección reduce el riesgo de romper `main` dentro de lo que las comprobaciones cubren.
+![Mismo PR corregido y aprobado](evidencias/parte3_verde_otra_vez.png)
 
-## 5. Revisión crítica del agente
+## 5. ¿Qué sugerencias del agente acepté o descarté?
 
-Acepté permisos `contents: read`, evitar que checkout conserve credenciales y `if-no-files-found: error`: la entrega debe fallar si falta el APK. No se agregaron secretos, despliegues ni paquetes en `pubspec.yaml`.
+Acepté limitar el token a lectura, desactivar la conservación de credenciales en el checkout y hacer fallar la entrega si falta el APK. Descarté añadir otra acción para desplegarlo porque el deber termina cuando el archivo está disponible en Actions. Revisé la documentación de las tres acciones utilizadas. Un riesgo pendiente es que tanto las etiquetas de las acciones como el canal estable pueden cambiar entre ejecuciones. [Checkout](https://github.com/actions/checkout) · [Instalación de Flutter](https://github.com/subosito/flutter-action) · [Publicación del artifact](https://github.com/actions/upload-artifact)
 
-El agente señaló fragilidad por `ubuntu-latest`, Flutter estable y etiquetas de acciones que pueden cambiar. Fijar versiones y SHA completos mejoraría la reproducibilidad; se dejó como mejora futura para mantener Flutter estable según la consigna. Se descartó incorporar acciones adicionales de caché o despliegue porque no hacen falta para este deber.
+## 6. ¿Qué garantiza un CI verde?
 
-`subosito/flutter-action` es de terceros: se consultó su repositorio y uso, lo que no equivale a auditar todo su código. Las demás acciones son de la organización `actions`. No se incluyeron nombres de paquetes o acciones sin comprobar su existencia.
+Para ese commit y ese entorno, el código pasó el análisis, las 12 pruebas y la compilación debug. Por ejemplo, el cálculo podría seguir dando $27.50 y un botón quedar fuera de la pantalla en un teléfono pequeño. Las pruebas actuales no cubren ese tamaño de pantalla.
 
-Cada job tiene su propio entorno: `entrega` recompila en lugar de buscar el archivo del primer job. Esto consume más tiempo y, si cambian dependencias entre jobs, no asegura identidad binaria con el APK verificado. Transferir el APK original sería una mejora futura.
+## 7. ¿Qué detectó el pipeline?
 
-Referencias: [checkout](https://github.com/actions/checkout), [Flutter action](https://github.com/subosito/flutter-action), [upload-artifact](https://github.com/actions/upload-artifact), [condiciones de jobs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-jobs-with-conditions).
+El cambio de 50 centavos quedó en el dato de prueba. El analizador lo aceptó porque `27.00` es un número válido. Al comparar el resultado real con el esperado, Actions informó que pasaron 11 pruebas y falló una. Ahí se detuvo y omitió el build. La causa fue el cambio intencional en la expectativa. Al restaurar $27.50 pasaron las 12 pruebas. [Ejecución roja](https://github.com/Soaks2112/divisor_cuenta/actions/runs/41310847533) · [Ejecución corregida](https://github.com/Soaks2112/divisor_cuenta/actions/runs/41311011271)
 
-## 6. Qué garantiza un CI verde
+Además del fallo provocado, el log de la primera compilación mostró un aviso de Java por el acceso nativo que usa Gradle. El APK se generó aun con ese aviso. [Log del primer build](https://github.com/Soaks2112/divisor_cuenta/actions/runs/41310468419/job/124859577313#step:7:1)
 
-Que el código analizado, las pruebas incluidas y la compilación pasaron en el entorno de esa ejecución. No garantiza ausencia de errores ni calidad en todos los dispositivos. Por ejemplo, un botón podría quedar fuera de la pantalla en un teléfono pequeño y pasar estas pruebas, porque no se verifica ese tamaño de pantalla.
+## APK entregado
 
-## 7. Qué detectó el pipeline que yo no había visto
+El ZIP `divisor-cuenta-debug` se descargó del run de `main` y se verificó que contiene `app-debug.apk`. [PR de entrega](https://github.com/Soaks2112/divisor_cuenta/pull/4) · [Run de main](https://github.com/Soaks2112/divisor_cuenta/actions/runs/41311687528)
 
-Pendiente de completar después de leer el log real de Actions. Si solo aparece el fallo intencional, decirlo; no inventar errores adicionales descubiertos por CI.
-
-Durante la preparación local, `flutter pub get` regeneró un `pubspec.lock` incompleto. Fue un hallazgo local, no un resultado del pipeline remoto. Localmente pasaron 12 pruebas y el analizador no encontró avisos.
-
-## Evidencias y enlaces por completar
-
-| Evidencia requerida | Archivo pendiente |
-|---|---|
-| CI inicial verde | [parte1_ci_verde.png](evidencias/parte1_ci_verde.png) |
-| Protección de main (obligatoria) | [parte2_proteccion.png](evidencias/parte2_proteccion.png) |
-| CI rojo y log | [parte3_rojo.png](evidencias/parte3_rojo.png) |
-| Merge bloqueado | [parte3_merge_bloqueado.png](evidencias/parte3_merge_bloqueado.png) |
-| Mismo PR corregido en verde | [parte3_verde_otra_vez.png](evidencias/parte3_verde_otra_vez.png) |
-| Artifact de Actions (obligatoria) | [parte4_artifact.png](evidencias/parte4_artifact.png) |
-
-- PR del pipeline inicial: pendiente.
-- PR con historial rojo → verde: pendiente.
-- PR de entrega automática: pendiente.
-- Run de main con artifact descargado: pendiente.
-- PR final deber4 → main: pendiente. Este será el único enlace que se entrega.
+![Artifact del APK en GitHub Actions](evidencias/parte4_artifact.png)
